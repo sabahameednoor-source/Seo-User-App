@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8" />
+  <title>SEO Tracker Agency — Admin Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg1: #0b1020;
+      --bg2: #203a43;
+      --glass: rgba(255,255,255,0.08);
+      --stroke: rgba(255,255,255,0.18);
+      --txt: #eaf3ff;
+      --muted: #b7c7dc;
+      --accent1: #00d4ff;
+      --accent2: #7c4dff;
+      --err: #ff5f5f;
+    }
+    *{box-sizing:border-box}
+    html, body{height:100%}
+    body {
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(900px 600px at 70% 20%, rgba(124,77,255,0.16), transparent 60%),
+                  radial-gradient(800px 600px at 15% 80%, rgba(0,212,255,0.16), transparent 60%),
+                  linear-gradient(135deg, var(--bg1), var(--bg2));
+      color: var(--txt);
+      padding: 20px;
+    }
+    .card {
+      background: var(--glass);
+      border: 1px solid var(--stroke);
+      border-radius: 20px;
+      backdrop-filter: blur(12px) saturate(130%);
+      padding: 26px;
+      width: min(90vw, 400px);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    }
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: -30% -30% auto auto;
+      width: 320px;
+      height: 320px;
+      background: conic-gradient(from 90deg, rgba(0,212,255,0.5), rgba(124,77,255,0.6), rgba(0,212,255,0.5));
+      filter: blur(40px);
+      opacity: 0.3;
+      pointer-events: none;
+      transform: rotate(10deg);
+    }
+    h1 { margin: 0 0 6px; font-size: clamp(22px, 5vw, 28px); font-weight: 800; }
+    .sub { margin: 0 0 18px; color: var(--muted); font-size: 0.9rem; }
+    label { display: block; margin: 8px 0 4px; font-size: 0.92rem; }
+    input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--stroke);
+      border-radius: 10px;
+      background: rgba(255,255,255,0.06);
+      color: var(--txt);
+      font-size: 0.96rem;
+      transition: 0.2s;
+    }
+    input:focus {
+      border-color: var(--accent1);
+      box-shadow: 0 0 6px rgba(0,212,255,0.4);
+    }
+    .row { display: flex; align-items: center; gap: 8px; }
+    .showpw {
+      cursor: pointer;
+      font-size: 0.85rem;
+      color: var(--muted);
+      user-select: none;
+    }
+    .err { color: var(--err); margin-top: 8px; font-size: 0.88rem; }
+    button {
+      margin-top: 18px;
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(90deg, var(--accent1), var(--accent2));
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      cursor: pointer;
+      font-weight: 600;
+      box-shadow: 0 10px 25px rgba(0,210,255,0.35);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 35px rgba(0,210,255,0.5);
+    }
+    .hint { font-size: 0.84rem; color: var(--muted); margin-top: 12px; }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h1>SEO Tracker Agency</h1>
+    <p class="sub">Admin login to open keyword research form</p>
+    <div>
+      <label for="email">Email</label>
+      <input id="email" type="email" placeholder="you@example.com" required />
+    </div>
+    <div>
+      <label for="password">Password</label>
+      <div class="row">
+        <input id="password" type="password" placeholder="••••••" required />
+        <span id="togglePw" class="showpw">Show</span>
+      </div>
+    </div>
+    <div id="msg" class="err" role="alert"></div>
+    <div class="hint">Credentials: Admin: <b>sabaseoexpert36@gmail.com</b> — Pass: <b>123</b></div>
+    <button id="btnLogin">Login</button>
+  </div>
+
+  <script>
+    const VALID_EMAIL = "sabaseoexpert36@gmail.com";
+    const VALID_PASS = "123";
+    const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbwJYSwsIh53Zs9tm76DWHPwUGg3va2LST5DkY5sTN0g1v2HttEPBiBgYY43hQrEX30p/exec";
+
+    const email = document.getElementById('email');
+    const pass = document.getElementById('password');
+    const msg = document.getElementById('msg');
+    const btn = document.getElementById('btnLogin');
+    const togglePw = document.getElementById('togglePw');
+
+    togglePw.addEventListener('click', () => {
+      const isPw = pass.type === 'password';
+      pass.type = isPw ? 'text' : 'password';
+      togglePw.textContent = isPw ? 'Hide' : 'Show';
+      pass.focus();
+    });
+
+    btn.addEventListener('click', () => {
+      msg.textContent = '';
+      const ev = (email.value || '').trim().toLowerCase();
+      const pv = (pass.value || '').trim();
+
+      if (!ev || !pv) {
+        msg.textContent = "Enter both email and password!";
+        return;
+      }
+      if (ev === VALID_EMAIL && pv === VALID_PASS) {
+        window.location.href = APPSCRIPT_URL;
+      } else {
+        msg.textContent = "Invalid email or password!";
+      }
+    });
+
+    email.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); pass.focus(); } });
+    pass.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); btn.click(); } });
+
+    window.addEventListener('load', () => email.focus());
+  </script>
+
+</body>
+</html>
